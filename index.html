@@ -14,8 +14,8 @@
   --card: var(--tg-theme-secondary-bg-color, #ffffff);
   --text: var(--tg-theme-text-color, #1a1a1a);
   --hint: var(--tg-theme-hint-color, #8e8e93);
-  --accent: var(--tg-theme-button-color, #2481cc);
-  --accent-text: var(--tg-theme-button-text-color, #ffffff);
+  --accent: #d9a32a;
+  --accent-text: #2a2008;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);padding-bottom:72px}
@@ -26,7 +26,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header .sub{color:var(--hint);font-size:12px;margin-top:2px}
 .search{margin:10px 16px;display:flex;gap:8px}
 .search input{flex:1;border:none;border-radius:12px;padding:11px 14px;font-size:15px;background:var(--card);color:var(--text);outline:none}
-.section-title{font-size:16px;font-weight:700;margin:14px 16px 8px}
+.brandbar{background:#2a2008;padding:14px 16px 14px;border-radius:0 0 20px 20px}
+.brandrow{display:flex;align-items:center;gap:10px}
+.brandrow .logo{width:36px;height:36px;border-radius:10px;background:var(--accent);color:#2a2008;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:700;flex:0 0 auto}
+.brandrow .bname{color:#fff;font-size:16px;font-weight:600;line-height:1.15}
+.brandrow .bsub{color:#c9b483;font-size:11px;margin-top:1px}
+.brandbar .search{margin:12px 0 0}
+.brandbar .search input{background:#fff;color:#1a1a1a}
+.section-title{font-size:16px;font-weight:700;margin:16px 16px 8px}
 .news{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 6px;scrollbar-width:none}
 .news::-webkit-scrollbar{display:none}
 .news-card{flex:0 0 130px;background:var(--card);border-radius:14px;overflow:hidden;position:relative;cursor:pointer}
@@ -38,10 +45,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .news-card .nbadge.top{background:#34c759}
 .oldp{color:var(--hint);text-decoration:line-through;font-weight:400;font-size:11px;margin-right:4px}
 .discbadge{position:absolute;top:6px;right:6px;background:#ff3b30;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px}
-.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:6px 16px 10px}
-.cattile{background:var(--card);border-radius:12px;padding:11px 12px;font-size:13px;font-weight:500;cursor:pointer;display:flex;flex-direction:column;gap:2px}
-.cattile.active{background:var(--accent);color:var(--accent-text)}
-.cattile .cnt{font-size:11px;opacity:.65;font-weight:400}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 10px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;background:var(--card);border-radius:18px;padding:8px 15px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--text)}
+.chip.active{background:var(--accent);color:var(--accent-text)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 16px}
 .pcard{background:var(--card);border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
 .pcard img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#e8e8ee}
@@ -108,10 +115,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 <!-- DO'KON -->
 <div class="view active" id="v-shop">
-  <div class="header"><h1 id="shopName">🛍 Noyob Do'kon</h1><div class="sub" id="updated"></div></div>
-  <div class="search"><input id="q" type="search" placeholder="🔍 Mahsulot qidirish..."></div>
+  <div class="brandbar">
+    <div class="brandrow">
+      <div class="logo">N</div>
+      <div><div class="bname" id="shopName">Noyob Optom</div><div class="bsub">Ulgurji savdo</div></div>
+    </div>
+    <div class="search"><input id="q" type="search" placeholder="Mahsulot yoki artikul..."></div>
+  </div>
+  <div class="sub" id="updated" style="padding:6px 16px 0;color:var(--hint);font-size:11px"></div>
   <div id="shelves"></div>
+  <div class="section-title">Kategoriyalar</div>
   <div class="cats" id="cats"></div>
+  <div class="section-title">Barcha mahsulotlar</div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none">Hech narsa topilmadi 😕</div>
 </div>
@@ -216,7 +231,6 @@ async function load(){
   try{
     const r = await fetch('data/products.json?v=' + Date.now());
     DATA = await r.json();
-    if(DATA.shop) el('shopName').textContent = '🛍 ' + DATA.shop;
     el('updated').textContent = 'Yangilangan: ' + (DATA.generated_at || '');
     if(DATA.authed){ await loadAuthedCatalog(); return; }
     renderShop();
@@ -263,9 +277,8 @@ function renderShelves(){
     </div>`).join('');
 }
 function renderCats(){
-  const total = (DATA.products||[]).length;
-  const cats = [{id:'',name:'Hammasi',count:total}].concat(DATA.categories||[]);
-  el('cats').innerHTML = cats.map(c=>`<div class="cattile ${activeCat===c.id?'active':''}" onclick="setCat('${c.id}')">${esc(c.name)}${c.count?`<span class="cnt">${c.count} ta</span>`:''}</div>`).join('');
+  const cats = [{id:'',name:'Hammasi'}].concat(DATA.categories||[]);
+  el('cats').innerHTML = cats.map(c=>`<div class="chip ${activeCat===c.id?'active':''}" onclick="setCat('${c.id}')">${esc(c.name)}</div>`).join('');
 }
 function setCat(id){ activeCat=id; renderCats(); renderGrid(); }
 function filtered(){
