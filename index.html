@@ -132,9 +132,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
   </div>
   <div class="sub" id="updated" style="padding:6px 16px 0;color:var(--hint);font-size:11px"></div>
   <div id="shelves"></div>
-  <div class="section-title">Kategoriyalar</div>
+  <div class="section-title" id="catTitle">Kategoriyalar</div>
   <div class="cats" id="cats"></div>
-  <div class="section-title">Barcha mahsulotlar</div>
+  <div class="section-title" id="gridTitle">Barcha mahsulotlar</div>
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" style="display:none">Hech narsa topilmadi 😕</div>
 </div>
@@ -291,9 +291,9 @@ function renderCats(){
 }
 function setCat(id){ activeCat=id; renderCats(); renderGrid(); }
 function filtered(){
-  let list = DATA.products;
+  let list = DATA.products || [];
+  if(query){ const q=query.toLowerCase(); return list.filter(p=>p.name.toLowerCase().includes(q)||(p.sku||'').toLowerCase().includes(q)); }
   if(activeCat) list = list.filter(p=>p.cat===activeCat);
-  if(query){ const q=query.toLowerCase(); list=list.filter(p=>p.name.toLowerCase().includes(q)||(p.sku||'').toLowerCase().includes(q)); }
   return list;
 }
 function renderGrid(){
@@ -474,7 +474,15 @@ function switchView(v){
   if(v==='profile'){ if(!loaded.profile){loaded.profile=true; loadProfile();} }
 }
 document.querySelectorAll('#nav button').forEach(b=> b.onclick=()=>switchView(b.dataset.v));
-el('q').addEventListener('input', e=>{ query=e.target.value.trim(); renderGrid(); });
+el('q').addEventListener('input', e=>{
+  query=e.target.value.trim();
+  const sr=!!query;
+  el('shelves').style.display=sr?'none':'';
+  el('cats').style.display=sr?'none':'';
+  el('catTitle').style.display=sr?'none':'';
+  el('gridTitle').textContent=sr?'Qidiruv natijasi':'Barcha mahsulotlar';
+  renderGrid();
+});
 el('pmodal').addEventListener('click', e=>{ if(e.target.id==='pmodal') el('pmodal').classList.remove('show'); });
 
 load();
