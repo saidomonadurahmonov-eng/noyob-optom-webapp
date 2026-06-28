@@ -10,12 +10,14 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
-  --bg: var(--tg-theme-bg-color, #f4f4f7);
-  --card: var(--tg-theme-secondary-bg-color, #ffffff);
-  --text: var(--tg-theme-text-color, #1a1a1a);
-  --hint: var(--tg-theme-hint-color, #8e8e93);
-  --accent: #d9a32a;
-  --accent-text: #2a2008;
+  --bg:#14110b;
+  --card:#201a11;
+  --card2:#2b2317;
+  --text:#f4eede;
+  --hint:#a4977a;
+  --accent:#e3b04a;
+  --accent-text:#1a1405;
+  --line:rgba(227,176,74,.16);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);padding-bottom:72px}
@@ -33,29 +35,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .brandrow .bsub{color:#c9b483;font-size:11px;margin-top:1px}
 .brandbar .search{margin:12px 0 0}
 .brandbar .search input{background:#fff;color:#1a1a1a}
-.section-title{font-size:16px;font-weight:700;margin:16px 16px 8px}
+.section-title{font-size:17px;font-weight:700;margin:18px 16px 10px;color:var(--text);letter-spacing:-.2px}
 .news{display:flex;gap:10px;overflow-x:auto;padding:2px 16px 6px;scrollbar-width:none}
 .news::-webkit-scrollbar{display:none}
-.news-card{flex:0 0 130px;background:var(--card);border-radius:14px;overflow:hidden;position:relative;cursor:pointer}
-.news-card img{width:130px;height:130px;object-fit:cover;display:block;background:#e8e8ee}
-.news-card .nbadge{position:absolute;top:6px;left:6px;background:#ff3b30;color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px}
-.news-card .nname{font-size:11px;padding:6px 8px 2px;height:32px;overflow:hidden;line-height:1.2}
-.news-card .nprice{font-size:12px;font-weight:700;padding:0 8px 8px;color:var(--accent)}
-.news-card .nbadge.disc{background:#ff9500}
-.news-card .nbadge.top{background:#34c759}
-.oldp{color:var(--hint);text-decoration:line-through;font-weight:400;font-size:11px;margin-right:4px}
-.discbadge{position:absolute;top:6px;right:6px;background:#ff3b30;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:8px}
+.news-card{flex:0 0 150px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;position:relative;cursor:pointer}
+.news-card img{width:100%;height:150px;object-fit:cover;display:block;background:var(--card2)}
+.news-card .nbadge{position:absolute;top:8px;left:8px;background:#e24b4a;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px}
+.news-card .nname{font-size:12px;padding:8px 10px 2px;height:34px;overflow:hidden;line-height:1.25;color:var(--text)}
+.news-card .nprice{font-size:14px;font-weight:700;padding:0 10px 10px;color:var(--accent)}
+.news-card .nbadge.disc{background:#e24b4a}
+.news-card .nbadge.top{background:#1d9e75}
+.oldp{color:var(--hint);text-decoration:line-through;font-weight:400;font-size:11px;margin-right:5px}
+.discbadge{position:absolute;top:9px;left:9px;background:#e24b4a;color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:9px}
 .cats{display:flex;gap:8px;overflow-x:auto;padding:8px 16px 10px;scrollbar-width:none}
 .cats::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;background:var(--card);border-radius:18px;padding:8px 15px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--text)}
-.chip.active{background:var(--accent);color:var(--accent-text)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 16px}
-.pcard{background:var(--card);border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
-.pcard img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#e8e8ee}
-.pcard .noimg{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:34px;background:#e8e8ee}
-.pcard .pname{font-size:12.5px;padding:8px 10px 2px;height:48px;overflow:hidden;line-height:1.25}
-.pcard .pprice{font-size:14px;font-weight:700;padding:0 10px 8px}
-.pcard button{margin:0 10px 10px;border:none;border-radius:10px;padding:8px;background:var(--accent);color:var(--accent-text);font-size:13px;font-weight:600;cursor:pointer}
+.chip{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:8px 16px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--text)}
+.chip.active{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:8px 16px 18px}
+.pcard{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column}
+.pimg{position:relative}
+.pimg img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--card2)}
+.pimg .noimg{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:36px;background:var(--card2)}
+.qadd{position:absolute;right:9px;bottom:9px;width:38px;height:38px;border-radius:50%;border:none;background:var(--accent);color:var(--accent-text);font-size:24px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,.4)}
+.qadd:active{transform:scale(.92)}
+.pinfo{padding:10px 12px 13px;cursor:pointer}
+.pname{font-size:13px;line-height:1.3;height:34px;overflow:hidden;color:var(--text)}
+.pprice{margin-top:7px;font-size:15.5px;font-weight:700;color:var(--accent)}
 .empty{text-align:center;color:var(--hint);padding:40px 20px;font-size:14px}
 
 /* Kabinet / Balans / Tarix */
@@ -75,7 +80,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 /* cart list */
 .cartlist{padding:0 16px}
 .cartlist .ci{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(128,128,128,.12)}
-.cartlist .ci img{width:54px;height:54px;border-radius:10px;object-fit:cover;background:#e8e8ee}
+.cartlist .ci img{width:54px;height:54px;border-radius:10px;object-fit:cover;background:var(--card2)}
 .cartlist .ci .nm{flex:1;font-size:13px;line-height:1.25}
 .cartlist .ci .ctr{display:flex;align-items:center;gap:8px}
 .cartlist .ci .ctr button{width:30px;height:30px;border-radius:8px;border:none;background:var(--bg);font-size:16px;cursor:pointer;color:var(--text)}
@@ -95,7 +100,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;z-index:50}
 .modal.show{display:flex}
 .sheet{background:var(--bg);width:100%;max-height:88vh;border-radius:18px 18px 0 0;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
-.sheet img.big{width:100%;max-height:46vh;object-fit:contain;background:#fff}
+.sheet img.big{width:100%;max-height:46vh;object-fit:contain;background:var(--card2)}
 .sheet .body{padding:14px 16px}
 .sheet h2{font-size:17px;line-height:1.3}
 .sheet .price{font-size:20px;font-weight:800;color:var(--accent);margin:8px 0 2px}
@@ -270,7 +275,7 @@ function renderShelves(){
       ${sh.items.map(p=>`
         <div class="news-card" onclick="openProduct('${p.id}')">
           <span class="nbadge ${BADGE_CLASS[sh.key]||''}">${p.disc?('-'+p.disc+'%'):esc(sh.badge)}</span>
-          ${p.photo?`<img src="${p.photo}" loading="lazy" onerror="this.style.display='none'">`:`<div style="width:130px;height:130px;background:#e8e8ee;display:flex;align-items:center;justify-content:center;font-size:34px">📦</div>`}
+          ${p.photo?`<img src="${p.photo}" loading="lazy" onerror="this.style.display='none'">`:`<div style="width:130px;height:130px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:34px">📦</div>`}
           <div class="nname">${esc(p.name)}</div>
           <div class="nprice">${p.old_price?`<span class="oldp">${fmt(p.old_price)}</span>`:''}${fmt(p.price)}</div>
         </div>`).join('')}
@@ -292,13 +297,15 @@ function renderGrid(){
   el('empty').style.display = list.length ? 'none':'block';
   el('grid').innerHTML = list.slice(0,300).map(p=>`
     <div class="pcard">
-      <div onclick="openProduct('${p.id}')" style="position:relative">
+      <div class="pimg" onclick="openProduct('${p.id}')">
         ${p.disc?`<span class="discbadge">-${p.disc}%</span>`:''}
         ${p.photo?`<img src="${p.photo}" loading="lazy" onerror="this.outerHTML='<div class=noimg>📦</div>'">`:`<div class="noimg">📦</div>`}
+        <button class="qadd" onclick="event.stopPropagation();quickAdd('${p.id}')">+</button>
+      </div>
+      <div class="pinfo" onclick="openProduct('${p.id}')">
         <div class="pname">${esc(p.name)}</div>
         <div class="pprice">${p.old_price?`<span class="oldp">${fmt(p.old_price)}</span>`:''}${fmt(p.price)}</div>
       </div>
-      <button onclick="quickAdd('${p.id}')">🛒 Savatga</button>
     </div>`).join('');
 }
 function getP(id){ return DATA.products.find(p=>p.id===id); }
@@ -348,7 +355,7 @@ function renderCart(){
     <div class="cartlist">
       ${items.map(c=>`
         <div class="ci">
-          ${c.photo?`<img src="${c.photo}">`:`<div style="width:54px;height:54px;border-radius:10px;background:#e8e8ee;display:flex;align-items:center;justify-content:center">📦</div>`}
+          ${c.photo?`<img src="${c.photo}">`:`<div style="width:54px;height:54px;border-radius:10px;background:var(--card2);display:flex;align-items:center;justify-content:center">📦</div>`}
           <div class="nm">${esc(c.name)}<br><b>${fmt(c.price*c.qty)}</b></div>
           <div class="ctr"><button onclick="cAdj('${c.id}',-1)">−</button><input class="cq" type="number" inputmode="numeric" min="1" max="999" value="${c.qty}" onchange="cSet('${c.id}',this.value)"><button onclick="cAdj('${c.id}',1)">+</button></div>
         </div>`).join('')}
